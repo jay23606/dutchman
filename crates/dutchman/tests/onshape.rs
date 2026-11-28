@@ -355,10 +355,7 @@ fn open_bundle(dir: &tempfile::TempDir) -> zip::ZipArchive<std::io::Cursor<Vec<u
     open_bundle_path(&dir.path().join("test.onshape-bundle"))
 }
 fn open_bundle_path(path: &std::path::Path) -> zip::ZipArchive<std::io::Cursor<Vec<u8>>> {
-    zip::ZipArchive::new(std::io::Cursor::new(
-        std::fs::read(path).unwrap(),
-    ))
-    .unwrap()
+    zip::ZipArchive::new(std::io::Cursor::new(std::fs::read(path).unwrap())).unwrap()
 }
 fn workspace_source() -> DocumentUrl {
     let mut src = source(PS);
