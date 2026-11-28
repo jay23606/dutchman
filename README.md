@@ -63,15 +63,15 @@ Every download holds the desktop app (`dutchman-gui`), the `dutchman` command, a
 
 The [Dutchman add-on for FreeCAD](https://github.com/dutchman-cad/freecad-addon) opens Fusion, Inventor, SolidWorks and the other formats Dutchman reads straight in FreeCAD, with an import report panel that says what came across and what didn't. To install it, open **Tools > Addon Manager > Preferences**, add the custom repository `https://github.com/dutchman-cad/freecad-addon` (branch `main`), reopen the Addon Manager, install **freecad-addon** and restart FreeCAD. The first import offers to download Dutchman itself. See [the FreeCAD add-on](docs/freecad-addon.md).
 
-## What's new in 0.3.0
+## What's new in 0.4.0
 
-- **Dutchman inside SolidCraft:** Install the Dutchman plugin with Preferences > Plugins > Install plugin… in SolidCraft 0.44 or newer (desktop) and approve its memory request (a plugin copied into the plugins folder by hand isn't approved and is refused for memory), then open Fusion, Inventor, SolidWorks and FreeCAD files directly, with editable history.
-- **Onshape support:** Connect your Onshape account from the app or with `dutchman onshape login`, using your own API keys or an OAuth bearer token, then paste a Part Studio link or use `dutchman onshape fetch`.
-- **SolidCraft 0.44 support:** SolidCraft 0.44 is the newest target.
-- **More Fusion history stays editable:** Chamfers with two different distances, contour flanges, Split Body, Copy/Paste Bodies, mirrored-then-removed bodies, symmetric patterns, Base Features that later steps change, clockwise sketch arcs, narrow profile regions such as belt teeth, surface revolves of open curves, and sweep paths made of connected edges all keep their history.
-- **Tell us when something is wrong:** "Is there a problem?
-- **Batch reports, paste, share links and a look first:** After a folder run, Batch report writes `dutchman-batch-report.md` and `.csv` into the output folder: a totals line, then one row per file with its outcome (full history, partial N of M, geometry only, or failed) and the first reason.
-- **More formats, options and fixes:** Siemens NX parts convert their geometry.
+- **Onshape fetches say what they cost:** Before it spends anything, the fetch estimates its API calls (Onshape's Free plan allows 2,500 a year) and asks first above 50.
+- **A partly converted history is now visible:** The features Dutchman can rebuild come first in the timeline, then a Remove of their bodies, then "Rest of the design (from ...)" holding the original shape.
+- **More history stays editable:** Offset Face works when its body has two names, Move Body maps to SolidCraft's body move, and holes that end at a flat face with curved edges, two-sided extrudes on one side of the sketch, extrudes whose sketch lives in another design, and lofts from a face of an earlier model state all rebuild.
+- **Fusion tool libraries to CamCraft:** A `.tools` or `.json` library converts to a CamCraft `.camtools`, lathe tools included; each tool or field CamCraft has no place for is named in the report.
+- **More honest results:** A design whose parts couldn't be placed says "N parts couldn't be placed" instead of calling it verified; `dutchman convert` then exits with status 1 and reports `"ok": false` with the count in `completeness.unplaced` (scripts that treated any written design as success should check this).
+- **The SolidCraft plugin works on a default SolidCraft:** without raising Max plugin fuel; a design too big for it opens in the Dutchman app, and a missing folder grant is named before anything is read.
+- **Smaller fixes:** Fusion designs made of many components read in about a minute instead of hours; hidden editable-history copies no longer double the bodies in a STEP export (RailCore 300ZL: 270 instead of 332); FreeCAD's own errors are reported apart from conversion losses; an empty STEP file says so; `convert-all` creates the folders for `--journal` and `--report-anon`, and its counts-only report says which Inventor release saved each file; "Review and send report" sits beside "File a GitHub issue"; unchanged designs are evaluated once.
 
 [Release notes](https://github.com/dutchman-cad/dutchman/releases/latest) · [Changelog](CHANGELOG.md)
 
@@ -135,7 +135,7 @@ Early development: **Reads** says whether a format's geometry can be read, and e
 | STEP | `.step`, `.stp` | Reads geometry | L8 | Geometry through STEP; solids and surfaces SolidCraft can import |
 | Onshape bundle | `.onshape-bundle` | Reads geometry | – | One offline Part Studio; geometry and editable history where features map |
 | IGES | `.igs`, `.iges` | Recognized, not converted | – | Import it in SolidCraft directly (File > Import) |
-| Circuit board | `.PcbDoc` | Reads geometry with the electronics module | – | Placed parts and flat board layers, through the electronics module (`dutchman-electronics`, installed separately) |
+| Circuit board | `.PcbDoc`, `.PrjPcb`, `.kicad_pcb` | Reads geometry with the electronics module | – | Placed parts and flat board layers, through the electronics module (`dutchman-electronics`, included in every Dutchman download; Altium boards and projects, KiCad 9 and 10 boards, file version 20241229 or later) |
 | Unidentified part (Creo or NX) | `.prt` | Recognized, not read yet | – | Not yet |
 | Inventor drawing | `.idw` | Recognized, but reading its sheets isn't supported yet. The report lists what was found. | – | A report of what was found; reading the sheets and views isn't supported yet, so no drawing is written |
 | SolidWorks drawing | `.slddrw` | Recognized, but reading its sheets isn't supported yet. The report lists what was found. | – | A report of what was found; reading the sheets and views isn't supported yet, so no drawing is written |
@@ -153,7 +153,7 @@ Output is a SolidCraft design (`.sc`), or, experimental, a FreeCAD rebuild macro
 
 Electronics module updates are available from the [module releases](https://github.com/dutchman-cad/dutchman-electronics/releases).
 
-Designs open in SolidCraft 0.18.2 to 0.50; 0.50 is the newest known target.
+Designs open in SolidCraft 0.18.2 to 0.51; 0.51 is the newest known target.
 
 A design Dutchman can't finish reading is stopped after 20 minutes with no progress (60 in all); in a Fusion `.f3z` archive it's left out and named, and the rest converts. Set `DUTCHMAN_DESIGN_TIME_LIMIT` to more minutes to give a large design longer.
 

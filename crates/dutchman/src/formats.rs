@@ -14,7 +14,7 @@ pub fn converts(format: Format) -> &'static str {
         return "left out of this build (the `freecad` feature); release builds convert them: https://github.com/dutchman-cad/dutchman/releases";
     }
     if format.needs_module() {
-        return "placed parts and flat board layers, through the electronics module (`dutchman-electronics`, installed separately)";
+        return "placed parts and flat board layers, through the electronics module (`dutchman-electronics`, included in every Dutchman download; Altium boards and projects, KiCad 9 and 10 boards, file version 20241229 or later)";
     }
     if format.is_drawing() {
         return "a report of what was found; reading the sheets and views isn't supported yet, so no drawing is written";

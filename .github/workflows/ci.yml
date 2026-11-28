@@ -730,7 +730,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           SOLIDCRAFT_CACHE: solidcraft-cache
         run: |
-          # "newest" is the minor named by NEWEST_SOLIDCRAFT, so a new minor never edits this file.
+          # "newest" follows NEWEST_SOLIDCRAFT (0.51); retain the separate 0.18.2 floor job.
           if [ "$SOLIDCRAFT_VERSION" = newest ]; then
             SOLIDCRAFT_VERSION=$(sed -n 's/^pub const NEWEST_SOLIDCRAFT: \[u64; 2\] = \[0, \([0-9]*\)\];$/0.\1/p' crates/dutchman-solidcraft/src/verify.rs)
             [[ $SOLIDCRAFT_VERSION =~ ^0\.[0-9]+$ ]] || { echo "NEWEST_SOLIDCRAFT not found" >&2; exit 1; }

@@ -219,7 +219,7 @@ A design stores its geometry compressed, so a large assembly stays small: SolidC
 [Install](install.md) has every option, checksums, and the one-time
 [first-run approval](install.md#opening-the-app-the-first-time) on macOS. Install
 [SolidCraft](install.md#solidcraft-optional-recommended) too: Dutchman uses it to check each
-converted history. The supported SolidCraft window is currently 0.40–0.50.
+converted history. The supported SolidCraft window is currently 0.42–0.51.
 
 ## Your first conversion
 
@@ -535,7 +535,9 @@ Which SolidCraft a design is written for, and how Dutchman finds the installed o
 - [The desktop app](desktop.md): presets, estimates, the SolidCraft version, and updates.
 - [The command line](command-line.md): options, `inspect`, `contents`, whole folders, watching a folder.
 - [Choosing what to keep](presets.md): Fast, Standard, Full, and the memory and time estimate.
-- [Formats](formats.md): what converts from each program.
+- [Formats](formats.md): what converts from each program. The included electronics module reads
+  Altium `.PcbDoc` / `.PrjPcb` and KiCad 9 and 10 `.kicad_pcb` boards (file version
+  20241229 or later). Open older KiCad boards in KiCad 9 or 10 and save first.
 - [Feature history](history.md): what maps onto SolidCraft, and what stops a history.
 - [Troubleshooting](troubleshooting.md): common problems and diagnostic logs.
 

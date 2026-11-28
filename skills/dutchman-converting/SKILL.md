@@ -357,6 +357,11 @@ After a refused conversion (except IGES and circuit boards) or a history that di
 map, the invitation links to test-file recipes at <https://dutchmancad.xyz/fixtures/> and offers private help:
 send the file and its STEP export to Dutchy in Discord.
 
+Every Dutchman download since 0.4.0 includes `dutchman-electronics` beside the program.
+It reads Altium `.PcbDoc` / `.PrjPcb` and KiCad 9 and 10 `.kicad_pcb` boards (file
+version 20241229 or later). Open older KiCad boards in KiCad 9 or 10 and save first.
+Settings can update the module into the per-user modules folder.
+
 What the installed build converts is what its `formats` says; check it rather than this
 list when unsure.
 
@@ -505,9 +510,9 @@ A bend without its mapped attached plate remains blocked.
 - `solidcraft_version: "0.25.1"` (CLI `--solidcraft-version 0.25.1` on `convert`,
   `convert-all`, or `watch`) chooses the target release. It must be x.y.z and at least
   0.18.2. The default is the found CLI's version capped at newest known, else the newest known at build time
-  (currently 0.50), even with CLI `--no-verify` or MCP `verify: false`.
+  (currently 0.51), even with CLI `--no-verify` or MCP `verify: false`.
   Dutchman targets the current SolidCraft with a rolling 14-day window (currently
-  0.40–0.50); older targets get simplified features with a named reason.
+  0.42–0.51); older targets get simplified features with a named reason.
 - `preset: "fast"` when the user wants only the shape. `history: false` (also
   `import_only: true`) removes history while keeping the preset's reference sketches and
   joints. Leave `verify` at its default.

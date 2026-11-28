@@ -791,7 +791,10 @@ impl Updater {
                 if !self.status.is_empty() {
                     ui.label(&self.status);
                 }
-                self.electronics.ui(ui);
+                // Background results add/remove module controls (including its spinner).
+                // Keep their automatic IDs from shifting the header checkbox IDs, so an
+                // accessibility click queued before a result still reaches its checkbox.
+                ui.push_id("electronics-settings", |ui| self.electronics.ui(ui));
                 let heading = ui.heading("Header buttons");
                 heading.ctx.accesskit_node_builder(heading.id, |node| {
                     node.set_role(egui::accesskit::Role::Heading);
