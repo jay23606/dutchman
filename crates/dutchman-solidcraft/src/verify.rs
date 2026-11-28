@@ -414,11 +414,11 @@ pub fn chosen_cli(chosen: &Path) -> Result<PathBuf, String> {
 pub const OLDEST_SOLIDCRAFT: [u64; 3] = [0, 18, 2];
 
 /// The newest minor known at build time. Patch releases need no constant update.
-pub const NEWEST_SOLIDCRAFT: [u64; 2] = [0, 50];
+pub const NEWEST_SOLIDCRAFT: [u64; 2] = [0, 51];
 
 /// The oldest SolidCraft release published in the 14 days before the tag, never below
 /// OLDEST_SOLIDCRAFT. Update alongside NEWEST_SOLIDCRAFT and the CI roundtrip pins at release time.
-pub const WINDOW_OLDEST: [u64; 3] = [0, 40, 0];
+pub const WINDOW_OLDEST: [u64; 3] = [0, 42, 0];
 
 /// Writer capabilities whose output depends on the target release.
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -3928,7 +3928,8 @@ mod cli_tests {
         for version in [
             "0.18.2", "0.20.0", "0.25.1", "0.27.1", "0.40.0", "0.41.0", "0.42.0", "0.43.0",
             "0.44.0", "0.44.1", "0.44.9", "0.45.0", "0.45.9", "0.46.0", "0.46.9", "0.47.0",
-            "0.47.9", "0.48.0", "0.48.9", "0.49.0", "0.49.9", "0.50.0", "nonsense", "0.17.0",
+            "0.47.9", "0.48.0", "0.48.9", "0.49.0", "0.49.9", "0.50.0", "0.51.0", "0.51.2",
+            "0.51.9", "0.52.0", "nonsense", "0.17.0",
         ] {
             let cli = dir.path().join(version);
             std::fs::write(
@@ -4306,6 +4307,28 @@ mod version_tests {
     }
 
     #[test]
+    fn target_051_keeps_050_writer_capabilities() {
+        let target: SolidCraftVersion = "0.51.0".parse().unwrap();
+        let previous: SolidCraftVersion = "0.50.0".parse().unwrap();
+        for gate in [
+            VersionGate::EntryRecessTip,
+            VersionGate::ConePrimitive,
+            VersionGate::SketchProfileCoil,
+            VersionGate::MirrorChain,
+            VersionGate::HistoryBody,
+            VersionGate::SplitFaces,
+            VersionGate::ScopedBodies,
+            VersionGate::ClosedCircleBlend,
+            VersionGate::MoveBody,
+            VersionGate::UnifiedThread,
+        ] {
+            assert_eq!(gate.supported(target), gate.supported(previous));
+        }
+        assert_eq!(target.extension(), previous.extension());
+        assert!(!target_loses_history(target));
+    }
+
+    #[test]
     fn minor_status_preserves_patch_sensitive_writer_rules() {
         for (found, status) in [
             ("0.27.0", "current"),
@@ -4328,7 +4351,10 @@ mod version_tests {
             ("0.49.9", "current"),
             ("0.50.0", "current"),
             ("0.50.9", "current"),
-            ("0.51.0", "newer"),
+            ("0.51.0", "current"),
+            ("0.51.2", "current"),
+            ("0.51.9", "current"),
+            ("0.52.0", "newer"),
             ("0.17.99", "too_old"),
         ] {
             assert_eq!(

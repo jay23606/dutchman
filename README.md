@@ -153,7 +153,7 @@ Output is a SolidCraft design (`.sc`), or, experimental, a FreeCAD rebuild macro
 
 Electronics module updates are available from the [module releases](https://github.com/dutchman-cad/dutchman-electronics/releases).
 
-Designs open in SolidCraft 0.18.2 to 0.50; 0.50 is the newest known target.
+Designs open in SolidCraft 0.18.2 to 0.51; 0.51 is the newest known target.
 
 A design Dutchman can't finish reading is stopped after 20 minutes with no progress (60 in all); in a Fusion `.f3z` archive it's left out and named, and the rest converts. Set `DUTCHMAN_DESIGN_TIME_LIMIT` to more minutes to give a large design longer.
 

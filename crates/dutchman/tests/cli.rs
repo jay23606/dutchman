@@ -1599,7 +1599,7 @@ mod external_tools {
             file.write_all(
                 br#"#!/bin/sh
 if [ "$1" = "--version" ]; then
-    printf 'solidcraft-cli 0.50.0\n'
+    printf 'solidcraft-cli 0.51.2\n'
     exit 0
 fi
 printf 'replay\n' >> "$DUTCHMAN_TEST_REPLAY_MARKER"
@@ -1617,7 +1617,7 @@ exit 1
             "-o",
             output.to_str().unwrap(),
             "--solidcraft-version",
-            "0.50.0",
+            "0.51.2",
             "--json",
         ];
         // Preflight fits while the calibrated check does not.
@@ -2608,7 +2608,7 @@ fn a_check_stopped_for_memory_keeps_the_design_unverified() {
     let cli = dir.path().join("solidcraft-cli");
     std::fs::write(
         &cli,
-        "#!/bin/sh\nif [ \"$1\" = --version ]; then echo 'solidcraft-cli 0.50.1'; exit 0; fi\nsleep 30\n",
+        "#!/bin/sh\nif [ \"$1\" = --version ]; then echo 'solidcraft-cli 0.51.2'; exit 0; fi\nsleep 30\n",
     )
     .unwrap();
     std::fs::set_permissions(&cli, std::fs::Permissions::from_mode(0o755)).unwrap();
@@ -3827,7 +3827,7 @@ fn history_check_skips_for_low_memory_but_off_and_force_remain_explicit() {
         "-o",
         output.to_str().unwrap(),
         "--solidcraft-version",
-        "0.50.0",
+        "0.51.2",
         "--json",
     ];
     let out = dutchman_with(&args, &env);
@@ -3873,7 +3873,7 @@ fn history_check_skips_for_low_memory_but_off_and_force_remain_explicit() {
             "--out-dir",
             dir.path().to_str().unwrap(),
             "--solidcraft-version",
-            "0.50.0",
+            "0.51.2",
             "--json",
         ],
         &env,
@@ -3900,7 +3900,7 @@ fn low_memory_keeps_editable_history_unverified_and_the_original_shape_visible()
             "-o",
             output.to_str().unwrap(),
             "--solidcraft-version",
-            "0.50.0",
+            "0.51.2",
             "--part",
             "1",
             "--stop-at-feature",
@@ -3948,7 +3948,7 @@ fn automatic_assembly_workers_use_the_synthetic_free_memory_budget() {
             output.to_str().unwrap(),
             "--no-verify",
             "--solidcraft-version",
-            "0.50.0",
+            "0.51.2",
             "--json",
         ],
         &[("DUTCHMAN_TEST_MEMORY", "100000000,500000000")],

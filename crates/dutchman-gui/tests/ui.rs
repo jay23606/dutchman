@@ -1256,12 +1256,12 @@ fn screenshots() {
         );
         for (found, case, update, width) in [
             (Some("0.50.9"), "current", false, 1120.0),
-            (Some("0.51.0"), "newer", false, 1120.0),
-            (Some("0.51.0"), "newer-update", true, 1120.0),
+            (Some("0.52.0"), "newer", false, 1120.0),
+            (Some("0.52.0"), "newer-update", true, 1120.0),
             (Some("0.17.9"), "too-old", false, 1120.0),
             (Some("0.24.0"), "older-history", false, 1120.0),
             (None, "none-found", false, 1120.0),
-            (Some("0.51.0"), "narrow", true, 760.0),
+            (Some("0.52.0"), "narrow", true, 760.0),
         ] {
             let mut preview = Harness::builder()
                 .with_size(egui::vec2(width, 680.0))
@@ -1706,7 +1706,7 @@ fn solidcraft_status_panel_waits_for_a_click_and_shares_version_notices() {
         return;
     }
     for (found, expected) in [
-        (Some("0.51.0"), "is newer than this Dutchman knows"),
+        (Some("0.52.0"), "is newer than this Dutchman knows"),
         (Some("0.17.9"), "is too old to open Dutchman's designs"),
         (
             Some("0.24.0"),

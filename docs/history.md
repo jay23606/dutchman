@@ -563,7 +563,7 @@ When a partial history is checked against the source's stored bodies, each kept 
 sit where the source has it: within the larger of 1 mm and 2% of its box diagonal when the
 source's position is approximate, or 0.5 mm and 1% when it is exact.
 
-Dutchman targets SolidCraft 0.50 by default with the writer capabilities available in 0.49 and
+Dutchman targets SolidCraft 0.51 by default with the writer capabilities available in 0.50 and
 keeps design format 23, as for earlier targets. SolidCraft 0.50 opens every earlier
 design format. Saving in SolidCraft 0.50 upgrades a design to format 69 (drawing format 8);
 SolidCraft 0.49 warns about a design saved in 0.50, opens what it can read and keeps the rest.
@@ -634,3 +634,10 @@ the result. If a named failure cannot be removed, conversion stops without writi
 evaluator error or nonzero exit without named failed features means verification is
 unavailable: the design is still written, marked unverified, with the reason. Verification
 turned off remains unchecked.
+
+SolidCraft 0.51 compatibility: 0.51.0 saves design format 72 and drawing format 11;
+0.51.2 saves design format 74 and drawing format 11. Both open earlier designs, so
+Dutchman keeps writing format 23. The zip default and new app ID
+(`io.tangencylabs.solidcraft`) need no writer change. The 0.51.2 release restores
+coil sections across or beside the axis that 0.51.1 refused; Dutchman keeps its
+existing profile-plane move (#1121) and all writer checks. No refusal is removed.
