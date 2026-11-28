@@ -1133,6 +1133,10 @@ fn assembly_fetch_captures_configured_external_partstudio_and_reuses_its_cache()
         .find(|name| name.starts_with(&prefix) && name.ends_with("manifest.json"))
         .unwrap();
     let manifest = zip_value(&mut archive, "manifest.json");
+    // Both instances have the same configuration and archive prefix but different
+    // linked-document contexts. The bundle stores that prefix once and the fetch
+    // must not repeat the external reads or count its bytes twice.
+    assert_eq!(manifest["external"].as_array().unwrap().len(), 2);
     assert_eq!(manifest["external"][0]["versionId"], OTHER_VERSION);
     assert_eq!(manifest["external"][0]["microversionId"], OTHER_MID);
     assert_eq!(
@@ -2664,6 +2668,20 @@ fn a_fully_cached_assembly_with_two_local_studios_estimates_no_remaining_calls()
     assert!(idle.sent.is_empty());
     assert_eq!(cached.listing_calls, 0);
     assert_eq!(cached.calls, 0);
+    assert!(!cached.needs_approval());
+    assert!(approval(&cached, false, false, |_| false).is_ok());
+    let mut cached_fetch = Mock::default();
+    let report = fetch_approved(
+        &mut cached_fetch,
+        &auth,
+        &source(AS),
+        &dir.path().join("cached-assembly.onshape-bundle"),
+        &cache,
+        &cached,
+    )
+    .unwrap();
+    assert_eq!(report.calls, 0);
+    assert!(cached_fetch.sent.is_empty());
 }
 
 #[test]
@@ -2797,6 +2815,7 @@ fn empty_external_configuration_uses_the_default_query_and_reference_prefix() {
         root_features,
     ]);
     let _ = estimate_calls(&mut mock, &auth, &source(AS), &cache).unwrap();
+    assert_eq!(mock.sent.len(), 7);
     assert!(mock
         .sent
         .iter()
