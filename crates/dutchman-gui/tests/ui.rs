@@ -197,6 +197,28 @@ fn the_header_has_donate_and_discord_buttons_that_settings_can_hide() {
     assert!(h.query_by_label("Donate").is_some());
 }
 
+/// A module result can arrive between queuing an accessibility click and drawing Settings.
+#[cfg(feature = "test-support")]
+#[test]
+fn header_checkbox_clicks_survive_module_controls_changing() {
+    let mut h = harness();
+    h.state_mut().updater.preview_module(0);
+    h.run();
+    h.get_by_label("Show the Donate button").click_accesskit();
+    // Adds the update status and install button before the queued click is processed.
+    h.state_mut().updater.preview_module(1);
+    h.run();
+    assert!(!h.state().updater.show_donate);
+    assert!(h.query_by_label("Donate").is_none());
+    assert!(h.state().updater.show_discord);
+    h.get_by_label("Show the Discord button").click_accesskit();
+    // Removes the install button before processing this click.
+    h.state_mut().updater.preview_module(2);
+    h.run();
+    assert!(!h.state().updater.show_discord);
+    assert!(h.query_by_label("Discord").is_none());
+}
+
 /// The three-step layout at 1280x800 (and the smallest width), English and with a long German
 /// design name, day and night, for a mechanical design and a circuit board, plus Settings.
 /// Neutral paths under /tmp/demo, synthetic design names only.
