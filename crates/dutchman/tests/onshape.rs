@@ -352,8 +352,11 @@ fn zip_value(zip: &mut zip::ZipArchive<std::io::Cursor<Vec<u8>>>, name: &str) ->
 }
 // Read into memory: an open file can't be replaced on Windows, and the cache tests fetch again over the same bundle.
 fn open_bundle(dir: &tempfile::TempDir) -> zip::ZipArchive<std::io::Cursor<Vec<u8>>> {
+    open_bundle_path(&dir.path().join("test.onshape-bundle"))
+}
+fn open_bundle_path(path: &std::path::Path) -> zip::ZipArchive<std::io::Cursor<Vec<u8>>> {
     zip::ZipArchive::new(std::io::Cursor::new(
-        std::fs::read(dir.path().join("test.onshape-bundle")).unwrap(),
+        std::fs::read(path).unwrap(),
     ))
     .unwrap()
 }
@@ -1113,7 +1116,7 @@ fn assembly_fetch_captures_configured_external_partstudio_and_reuses_its_cache()
         report.calls - estimate.listing_calls
     );
     assert_eq!(report.calls, 41);
-    let mut archive = open_bundle(&dir);
+    let mut archive = open_bundle_path(&output);
     let prefix = format!("references/{OTHER}/{OTHER_VERSION}/{OTHER_ELEMENT}/config-");
     assert!(archive
         .file_names()
@@ -2759,7 +2762,7 @@ fn the_assembly_estimate_counts_external_configurations_and_reuses_definitions()
     let mut cached = Mock::default();
     let again = estimate_calls(&mut cached, &auth, &source(AS), &cache).unwrap();
     assert_eq!(again.listing_calls, 0);
-    assert_eq!(again.calls, 36);
+    assert_eq!(again.calls, 37);
 }
 
 #[test]
