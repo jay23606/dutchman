@@ -20,7 +20,7 @@ pub enum Format {
     Step,
     OnshapeBundle,
     Iges,
-    /// A circuit board file, read by the optional electronics module.
+    /// A circuit board file, read by the included electronics module.
     ModuleBoard,
     /// A shared part suffix whose contents do not identify Creo or NX.
     UnclassifiedPart,
@@ -118,7 +118,7 @@ impl Format {
             Self::ModuleBoard => (
                 "module_board",
                 "PcbDoc",
-                "Circuit board (.PcbDoc)",
+                "Circuit board (.PcbDoc, .PrjPcb, .kicad_pcb)",
                 "Circuit board",
             ),
             Self::UnclassifiedPart => (
@@ -383,6 +383,14 @@ impl Format {
 #[cfg(test)]
 mod drawing_words_tests {
     use super::Format;
+
+    #[test]
+    fn board_display_name_lists_altium_and_kicad_files() {
+        assert_eq!(
+            Format::ModuleBoard.name(),
+            "Circuit board (.PcbDoc, .PrjPcb, .kicad_pcb)"
+        );
+    }
 
     #[test]
     fn every_drawing_format_says_one_thing_about_what_it_reads() {

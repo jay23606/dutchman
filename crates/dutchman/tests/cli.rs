@@ -697,6 +697,28 @@ fn formats_markdown_matches_the_formats_page() {
 }
 
 #[test]
+fn formats_describes_the_included_board_module() {
+    for option in [None, Some("--json"), Some("--markdown")] {
+        let mut args = vec!["formats"];
+        args.extend(option);
+        let out = dutchman(&args);
+        assert!(out.status.success());
+        let text = String::from_utf8(out.stdout).unwrap();
+        for expected in [
+            ".PcbDoc",
+            ".PrjPcb",
+            ".kicad_pcb",
+            "included in every Dutchman download",
+            "KiCad 9 and 10",
+            "20241229",
+        ] {
+            assert!(text.contains(expected), "missing {expected}: {text}");
+        }
+        assert!(!text.contains("installed separately"));
+    }
+}
+
+#[test]
 fn formats_lists_what_converts() {
     let out = dutchman(&["formats", "--json"]);
     assert_eq!(out.status.code(), Some(0));

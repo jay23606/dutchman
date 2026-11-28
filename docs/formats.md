@@ -25,7 +25,7 @@ The **Designs** input row shows only the plain reader status.
 | STEP | `.step`, `.stp` | Reads geometry | L8 | Geometry through STEP; solids and surfaces SolidCraft can import |
 | Onshape bundle | `.onshape-bundle` | Reads geometry | – | One offline Part Studio; geometry and editable history where features map |
 | IGES | `.igs`, `.iges` | Recognized, not converted | – | Import it in SolidCraft directly (File > Import) |
-| Circuit board | `.PcbDoc` | Reads geometry with the electronics module | – | Placed parts and flat board layers, through the electronics module (`dutchman-electronics`, installed separately) |
+| Circuit board | `.PcbDoc`, `.PrjPcb`, `.kicad_pcb` | Reads geometry with the electronics module | – | Placed parts and flat board layers, through the electronics module (`dutchman-electronics`, included in every Dutchman download; Altium boards and projects, KiCad 9 and 10 boards, file version 20241229 or later) |
 | Unidentified part (Creo or NX) | `.prt` | Recognized, not read yet | – | Not yet |
 | Inventor drawing | `.idw` | Recognized, but reading its sheets isn't supported yet. The report lists what was found. | – | A report of what was found; reading the sheets and views isn't supported yet, so no drawing is written |
 | SolidWorks drawing | `.slddrw` | Recognized, but reading its sheets isn't supported yet. The report lists what was found. | – | A report of what was found; reading the sheets and views isn't supported yet, so no drawing is written |
@@ -53,10 +53,11 @@ Output is a SolidCraft design (`.sc`), or, experimental, a FreeCAD rebuild macro
 - Inputs without a geometry reader are refused with exit 1. IGES (`.igs`, `.iges`) is
   refused before decoding, in single files and folders alike: "Dutchman doesn't convert
   IGES yet: open it in SolidCraft directly (File > Import)."
-- Circuit boards are read by the optional electronics module, a separate program,
-  `dutchman-electronics`. The module lists the extensions it reads (`.PcbDoc` today); Dutchman
-  recognizes `.PcbDoc` even without it and then says to install the module. See
-  [Optional modules](modules.md#how-dutchman-finds-and-runs-a-module).
+- Circuit boards are read by `dutchman-electronics`, included beside the program in every
+  Dutchman download since 0.4.0. It reads Altium boards (`.PcbDoc`) and projects (`.PrjPcb`),
+  and KiCad 9 and 10 boards (`.kicad_pcb`, file version 20241229 or later). For older KiCad
+  boards, open them in KiCad 9 or 10 and save. Settings can update the module into your
+  per-user modules folder. See [Modules](modules.md#how-dutchman-finds-and-runs-a-module).
 - A recognized format whose geometry has no solids or surfaces SolidCraft can import says so.
 
 ## Drawings

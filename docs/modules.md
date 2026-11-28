@@ -1,9 +1,13 @@
-# Optional modules
+# Modules
+
+The included electronics module reads Altium boards (`.PcbDoc`) and projects (`.PrjPcb`),
+and KiCad 9 and 10 boards (`.kicad_pcb`, file version 20241229 or later). Open older KiCad
+boards in KiCad 9 or 10 and save before converting.
 
 ## How Dutchman finds and runs a module
 
 A module is a separate program named `dutchman-<name>` (the electronics module is
-`dutchman-electronics`). Every installer bundles the electronics module beside the Dutchman executables.
+`dutchman-electronics`). Every Dutchman download since 0.4.0 bundles the electronics module beside the Dutchman executables.
 Dutchman compares the bundled and per-user copies using the SemVer version from `info --json`
 and uses the newer copy; equal versions use the bundled copy (build metadata does not break a tie).
 A copy whose info fails or whose version is not SemVer is skipped with a report note, allowing the
@@ -14,7 +18,7 @@ alongside Check for update and the update controls.
 The recommended modules folder survives updates: `~/Library/Application Support/Dutchman/modules`
 on macOS, `%LOCALAPPDATA%\Dutchman\modules` on Windows, and
 `$XDG_DATA_HOME/dutchman/modules` on Linux (default `~/.local/share/dutchman/modules`
-when unset or empty). Missing folders are skipped silently. Install it from
+when unset or empty). Missing folders are skipped silently. Source builds can get the module from
 https://github.com/dutchman-cad/dutchman-electronics/releases.
 
 Desktop Settings can update the electronics module from its release manifest. Updates go into the per-user modules folder. A newer copy with a supported interface wins over the included copy; the bundled program is never modified. Downloads are checked against the manifest SHA-256 before installation.
